@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cancer Awareness — Knowledge is the First Cure</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pearl: #f8f5f0;
+  --lavender: #c8b8d8;
+  --medical-blue: #4a90d9;
+  --rose: #e8758a;
+  --gold: #d4a843;
+  --glass-bg: rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.18);
+  --glass-shadow: 0 8px 48px rgba(0,0,0,0.25);
+  --blur: blur(18px);
+  --bg-dark: #0d0a14;
+  --text: rgba(248,245,240,0.92);
+  --text-muted: rgba(200,184,216,0.7);
+  --transition: cubic-bezier(0.4,0,0.2,1);
+}
+[data-theme="light"] {
+  --glass-bg: rgba(255,255,255,0.55);
+  --glass-border: rgba(255,255,255,0.8);
+  --bg-dark: #e8e0f0;
+  --text: #1a0e2e;
+  --text-muted: #5a4a6e;
+}
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ─── CANVAS BACKGROUND ─── */
+#bg-canvas {
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  z-index: 0; pointer-events:none;
+}
+
+/* ─── SCROLL PROGRESS ─── */
+#progress-bar {
+  position:fixed; top:0; left:0; height:2px; width:0%;
+  background: linear-gradient(90deg, var(--rose), var(--gold), var(--lavender));
+  z-index:9999; transition: width 0.1s linear;
+}
+
+/* ─── NAV ─── */
+nav {
+  position:fixed; top:0; width:100%; z-index:1000;
+  padding: 1rem 2rem;
+  display:flex; align-items:center; justify-content:space-between;
+  background: rgba(13,10,20,0.4);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--glass-border);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight:600;
+  background: linear-gradient(135deg, var(--pearl), var(--gold));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing:0.02em;
+}
+.nav-links { display:flex; gap:1.5rem; list-style:none; }
+.nav-links a {
+  color: var(--text-muted); text-decoration:none;
+  font-size:0.85rem; letter-spacing:0.05em; text-transform:uppercase;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--rose); }
+#theme-toggle {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  backdrop-filter: var(--blur); border-radius: 50px;
+  padding: 0.4rem 1rem; color: var(--text); cursor:pointer;
+  font-size:0.8rem; transition: all 0.4s var(--transition);
+}
+#theme-toggle:hover { background: rgba(255,255,255,0.15); }
+
+/* ─── GLASS PANEL BASE ─── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.glass-sm { border-radius:16px; }
+.glass-lg { border-radius:32px; }
+
+/* ─── HERO ─── */
+#hero {
+  position:relative; min-height:100vh; z-index:1;
+  display:flex; align-items:center; justify-content:center;
+  padding: 6rem 2rem 4rem;
+}
+.hero-content {
+  text-align:center; max-width:780px;
+  padding: 3.5rem 3rem;
+  animation: fadeUp 1.2s ease both;
+}
+.hero-badge {
+  display:inline-flex; align-items:center; gap:0.5rem;
+  padding: 0.4rem 1.2rem;
+  background: rgba(232,117,138,0.15);
+  border: 1px solid rgba(232,117,138,0.35);
+  border-radius: 50px; font-size:0.78rem;
+  color: var(--rose); letter-spacing:0.08em;
+  text-transform:uppercase; margin-bottom:1.5rem;
+  animation: fadeUp 1.2s 0.2s ease both;
+}
+.ribbon-icon { font-size:1rem; }
+h1.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight:600; line-height:1.1;
+  margin-bottom:1.2rem;
+  background: linear-gradient(135deg, var(--pearl) 40%, var(--lavender) 70%, var(--rose));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: fadeUp 1.2s 0.4s ease both;
+}
+.hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style:italic; font-size:1.25rem;
+  color: var(--text-muted); margin-bottom:2.5rem;
+  animation: fadeUp 1.2s 0.6s ease both;
+}
+.hero-btns {
+  display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+  animation: fadeUp 1.2s 0.8s ease both;
+}
+.btn-glass {
+  padding: 0.8rem 2rem; border-radius:50px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg); backdrop-filter: var(--blur);
+  color: var(--text); font-size:0.9rem; cursor:pointer;
+  text-decoration:none; display:inline-block;
+  transition: all 0.35s var(--transition);
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing:0.02em;
+  position:relative; overflow:hidden;
+}
+.btn-glass::before {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity:0; transition:opacity 0.3s;
+}
+.btn-glass:hover::before { opacity:1; }
+.btn-glass:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(232,117,138,0.25); border-color: var(--rose); color:var(--rose); }
+.btn-glass.primary {
+  background: linear-gradient(135deg, rgba(232,117,138,0.3), rgba(200,184,216,0.2));
+  border-color: var(--rose);
+}
+
+/* ─── FLOATING STATS ─── */
+.hero-stats {
+  display:flex; gap:1.5rem; justify-content:center; margin-top:3rem; flex-wrap:wrap;
+  animation: fadeUp 1.2s 1s ease both;
+}
+.stat-pill {
+  padding: 0.6rem 1.5rem; border-radius:50px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-size:0.8rem; color: var(--text-muted);
+}
+.stat-pill strong { color: var(--gold); font-size:1rem; display:block; }
+
+/* ─── SECTIONS ─── */
+section { position:relative; z-index:1; padding: 6rem 2rem; }
+.section-label {
+  font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase;
+  color: var(--rose); margin-bottom:0.8rem; font-weight:500;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem); font-weight:600;
+  line-height:1.2; margin-bottom:1rem;
+}
+.section-sub {
+  font-style:italic; color: var(--text-muted);
+  font-family:'Cormorant Garamond', serif; font-size:1.1rem;
+  max-width:520px; margin-bottom:3rem;
+}
+.container { max-width:1100px; margin:0 auto; }
+
+/* ─── WHAT IS CANCER ─── */
+#what-is-cancer .split {
+  display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center;
+}
+.cell-visual {
+  aspect-ratio:1; border-radius:24px; overflow:hidden;
+  background: radial-gradient(ellipse at 30% 40%, rgba(74,144,217,0.2) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 60%, rgba(232,117,138,0.15) 0%, transparent 50%),
+              var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  display:flex; align-items:center; justify-content:center;
+  position:relative; cursor:pointer;
+  transition: transform 0.4s var(--transition);
+}
+.cell-visual:hover { transform:scale(1.02); }
+.cell-anim { position:relative; width:100%; height:100%; }
+.cell {
+  position:absolute; border-radius:50%;
+  transition: all 0.6s ease;
+  animation: float-cell linear infinite;
+}
+.cell.healthy {
+  background: radial-gradient(circle at 35% 35%, rgba(74,144,217,0.9), rgba(74,144,217,0.3));
+  box-shadow: 0 0 20px rgba(74,144,217,0.4), inset 0 0 15px rgba(255,255,255,0.2);
+}
+.cell.cancer {
+  background: radial-gradient(circle at 35% 35%, rgba(232,117,138,0.9), rgba(200,50,80,0.4));
+  box-shadow: 0 0 20px rgba(232,117,138,0.4), inset 0 0 15px rgba(255,255,255,0.1);
+  border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%;
+}
+.cell-label {
+  position:absolute; bottom:1.5rem; width:100%;
+  display:flex; justify-content:space-around;
+  font-size:0.75rem; letter-spacing:0.05em; color: var(--text-muted);
+}
+.cell-label span:first-child { color: var(--medical-blue); }
+.cell-label span:last-child { color: var(--rose); }
+.info-card { padding:2.5rem; }
+.info-card p { color: var(--text-muted); line-height:1.8; margin-bottom:1rem; font-size:0.95rem; }
+.fact-tags { display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1.5rem; }
+.fact-tag {
+  padding:0.3rem 0.9rem; border-radius:50px;
+  font-size:0.78rem; border:1px solid var(--glass-border);
+  background: var(--glass-bg); color: var(--text-muted);
+}
+
+/* ─── SYMPTOMS ─── */
+#symptoms { overflow:hidden; }
+.symptoms-scroll {
+  display:flex; gap:1.5rem; overflow-x:auto; padding-bottom:1rem;
+  scrollbar-width:thin; scrollbar-color: rgba(232,117,138,0.3) transparent;
+  scroll-snap-type:x mandatory;
+}
+.symptoms-scroll::-webkit-scrollbar { height:4px; }
+.symptoms-scroll::-webkit-scrollbar-track { background:transparent; }
+.symptoms-scroll::-webkit-scrollbar-thumb { background: rgba(232,117,138,0.3); border-radius:2px; }
+.symptom-card {
+  min-width:220px; padding:2rem 1.5rem;
+  scroll-snap-align:start; flex-shrink:0;
+  text-align:center; cursor:pointer;
+  transition: transform 0.3s var(--transition), box-shadow 0.3s;
+}
+.symptom-card:hover { transform:translateY(-6px); box-shadow: 0 16px 48px rgba(232,117,138,0.2); }
+.symptom-icon { font-size:2.5rem; margin-bottom:1rem; display:block; }
+.symptom-card h4 { font-size:0.95rem; margin-bottom:0.5rem; font-weight:500; }
+.symptom-card p { font-size:0.82rem; color: var(--text-muted); line-height:1.6; }
+.heartbeat-bg {
+  position:absolute; bottom:0; left:0; right:0; height:60px;
+  opacity:0.15;
+}
+
+/* ─── DOS DONTS ─── */
+.dos-donts { display:grid; grid-template-columns:1fr 1fr; gap:2rem; }
+.dos-panel { border-color: rgba(100,200,120,0.3); background: rgba(100,200,120,0.06); }
+.donts-panel { border-color: rgba(232,117,138,0.3); background: rgba(232,117,138,0.06); }
+.panel-header {
+  font-family:'Cormorant Garamond', serif; font-size:1.6rem;
+  margin-bottom:1.5rem; display:flex; align-items:center; gap:0.8rem;
+}
+.dos-panel .panel-header { color: #7dd87f; }
+.donts-panel .panel-header { color: var(--rose); }
+.item-row {
+  display:flex; gap:1rem; padding:0.9rem 0;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  align-items:flex-start;
+}
+.item-row:last-child { border-bottom:none; }
+.item-icon { font-size:1.4rem; flex-shrink:0; margin-top:0.1rem; }
+.item-text h5 { font-size:0.9rem; font-weight:500; margin-bottom:0.2rem; }
+.item-text p { font-size:0.8rem; color: var(--text-muted); line-height:1.5; }
+
+/* ─── STATISTICS ─── */
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1.5rem; }
+.stat-card {
+  padding:2rem; text-align:center;
+  background: linear-gradient(145deg, var(--glass-bg), rgba(255,255,255,0.04));
+}
+.stat-number {
+  font-family:'Cormorant Garamond', serif;
+  font-size:3rem; font-weight:600;
+  background: linear-gradient(135deg, var(--gold), var(--rose));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  display:block;
+}
+.stat-desc { font-size:0.82rem; color:var(--text-muted); margin-top:0.5rem; line-height:1.5; }
+
+/* ─── TIMELINE ─── */
+.timeline { position:relative; padding-left:2rem; }
+.timeline::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:2px; background: linear-gradient(to bottom, var(--rose), var(--lavender), transparent);
+  border-radius:1px;
+}
+.timeline-item {
+  position:relative; padding:1.5rem 1.5rem 1.5rem 2rem;
+  margin-bottom:1rem;
+  transition: transform 0.3s;
+}
+.timeline-item:hover { transform:translateX(4px); }
+.timeline-dot {
+  position:absolute; left:-2.5rem; top:1.8rem;
+  width:14px; height:14px; border-radius:50%;
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  box-shadow:0 0 12px rgba(232,117,138,0.5);
+}
+.timeline-step { font-size:0.7rem; color:var(--rose); text-transform:uppercase; letter-spacing:0.1em; }
+.timeline-item h4 { font-size:1rem; margin:0.3rem 0; font-weight:500; }
+.timeline-item p { font-size:0.82rem; color:var(--text-muted); line-height:1.6; }
+
+/* ─── STORIES ─── */
+.stories-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; }
+.story-card {
+  padding:2rem; position:relative; overflow:hidden;
+  cursor:pointer; transition:transform 0.3s var(--transition);
+}
+.story-card:hover { transform:translateY(-4px); }
+.story-card::before {
+  content:''; position:absolute; top:-50%; left:-50%;
+  width:200%; height:200%;
+  background: radial-gradient(circle, rgba(232,117,138,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.story-avatar {
+  width:56px; height:56px; border-radius:50%;
+  background: linear-gradient(135deg, var(--rose), var(--lavender));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; margin-bottom:1.2rem;
+  box-shadow: 0 4px 16px rgba(232,117,138,0.3);
+}
+.story-card blockquote {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:1.1rem; color:var(--text); margin-bottom:1rem; line-height:1.7;
+}
+.story-meta { font-size:0.78rem; color:var(--text-muted); }
+.story-badge {
+  display:inline-block; padding:0.2rem 0.8rem; border-radius:50px;
+  background: rgba(100,200,120,0.15); border:1px solid rgba(100,200,120,0.3);
+  color:#7dd87f; font-size:0.7rem; letter-spacing:0.05em; margin-top:0.5rem;
+}
+
+/* ─── RESOURCES ─── */
+.resources-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:1.5rem; }
+.resource-card {
+  padding:2rem; text-align:center;
+  border-top:2px solid transparent;
+  transition: all 0.3s;
+}
+.resource-card:hover { border-top-color: var(--rose); transform:translateY(-3px); }
+.resource-icon { font-size:2rem; margin-bottom:1rem; }
+.resource-card h4 { font-size:1rem; margin-bottom:0.5rem; }
+.resource-card p { font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.5; }
+.resource-link {
+  display:inline-block; padding:0.4rem 1.2rem; border-radius:50px;
+  border:1px solid var(--rose); color:var(--rose);
+  font-size:0.78rem; text-decoration:none; cursor:pointer;
+  transition:all 0.3s;
+}
+.resource-link:hover { background:var(--rose); color:white; }
+
+/* ─── COLLAPSIBLE RESOURCE CARDS ─── */
+.rc-collapsible { cursor: pointer; position: relative; }
+.rc-top { position: relative; }
+.rc-chevron {
+  position: absolute; top: 0; right: 0;
+  font-size: 1.5rem; color: var(--rose);
+  transition: transform 0.35s var(--transition);
+  line-height: 1;
+}
+.rc-collapsible.open .rc-chevron { transform: rotate(90deg); }
+.rc-body {
+  max-height: 0; overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin-top 0.3s ease;
+  margin-top: 0;
+}
+.rc-collapsible.open .rc-body {
+  max-height: 600px; opacity: 1; margin-top: 1rem;
+}
+.rc-action { display: block; margin-top: 1rem; text-align: center; }
+.resource-card.rc-collapsible:hover { border-top-color: var(--rose); transform: translateY(-3px); }
+.resource-card.rc-collapsible.open { border-top-color: var(--rose); }
+
+/* ─── RESOURCE SUB-ITEMS ─── */
+.resource-sub-items {
+  margin: 1rem 0; display:flex; flex-direction:column; gap:0.6rem;
+  text-align:left;
+}
+.sub-item {
+  display:flex; gap:0.7rem; align-items:flex-start;
+  padding:0.6rem 0.8rem; border-radius:10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: background 0.2s;
+}
+.sub-item:hover { background: rgba(232,117,138,0.08); }
+.sub-icon { font-size:1.1rem; flex-shrink:0; margin-top:1px; }
+.sub-title { font-size:0.8rem; font-weight:500; color:var(--text); }
+.sub-detail { font-size:0.73rem; color:var(--text-muted); margin-top:1px; }
+.sub-link {
+  font-size:0.7rem; color:var(--rose); text-decoration:none;
+  border-bottom:1px solid transparent; transition:border 0.2s;
+}
+.sub-link:hover { border-bottom-color:var(--rose); }
+.coming-soon-preview { opacity:0.65; }
+
+/* ─── MODALS ─── */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:9000;
+  background: rgba(5,3,10,0.85); backdrop-filter:blur(12px);
+  align-items:center; justify-content:center; padding:2rem;
+}
+.modal-overlay.open { display:flex; animation: fadeIn 0.25s ease; }
+.modal-box {
+  max-width:680px; width:100%; max-height:85vh; overflow-y:auto;
+  padding:2.5rem; position:relative; border-radius:28px;
+  scrollbar-width:thin; scrollbar-color:rgba(232,117,138,0.3) transparent;
+}
+.modal-close {
+  position:absolute; top:1.2rem; right:1.5rem;
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12);
+  color:var(--text); cursor:pointer; font-size:1rem;
+  width:32px; height:32px; border-radius:50%; display:flex;
+  align-items:center; justify-content:center;
+  transition:background 0.2s;
+}
+.modal-close:hover { background:rgba(232,117,138,0.3); }
+.modal-icon { font-size:2.5rem; margin-bottom:1rem; }
+.modal-title {
+  font-family:'Cormorant Garamond',serif; font-size:1.9rem;
+  font-weight:600; margin-bottom:0.4rem;
+}
+.modal-sub { font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem; }
+
+/* ─── NGO LIST ─── */
+.ngo-list { display:flex; flex-direction:column; gap:0.6rem; }
+.ngo-item {
+  display:flex; align-items:center; gap:1rem;
+  padding:0.9rem 1.1rem; text-decoration:none; color:var(--text);
+  transition: all 0.25s;
+  border-radius:14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.ngo-item:hover { background:rgba(232,117,138,0.1); border-color:rgba(232,117,138,0.3); transform:translateX(4px); }
+.ngo-rank {
+  font-family:'Cormorant Garamond',serif; font-size:1.2rem;
+  color:var(--gold); font-weight:600; min-width:28px;
+}
+.ngo-info { flex:1; }
+.ngo-name { font-size:0.88rem; font-weight:500; margin-bottom:2px; }
+.ngo-desc { font-size:0.75rem; color:var(--text-muted); }
+.ngo-url { font-size:0.7rem; color:var(--rose); margin-top:2px; }
+.ngo-arrow { color:var(--rose); font-size:1rem; }
+
+/* ─── COMING SOON ─── */
+.coming-soon-badge {
+  display:inline-block; padding:0.4rem 1.2rem; border-radius:50px;
+  background:rgba(212,168,67,0.15); border:1px solid rgba(212,168,67,0.35);
+  color:var(--gold); font-size:0.78rem; letter-spacing:0.08em;
+  text-transform:uppercase; margin-bottom:0.5rem;
+}
+.coming-soon-features {
+  display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;
+  margin:1.5rem 0; text-align:left;
+}
+.cs-feature {
+  padding:0.8rem; border-radius:12px;
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);
+  font-size:0.8rem; display:flex; align-items:center; gap:0.5rem;
+}
+.notify-box {
+  padding:1.2rem; border-radius:16px;
+  background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+}
+.notify-input {
+  padding:0.6rem 1rem; border-radius:50px;
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+  color:var(--text); font-size:0.82rem; outline:none; width:200px;
+}
+.notify-input:focus { border-color:var(--rose); }
+
+@keyframes fadeIn { from {opacity:0; transform:scale(0.97)} to {opacity:1; transform:scale(1)} }
+
+/* ─── VIDEO SECTION ─── */
+#video-section { padding: 6rem 2rem; }
+.video-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.8rem;
+  align-items: start;
+}
+.video-wrapper {
+  position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+}
+.video-wrapper iframe {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  border-radius: 20px;
+}
+.video-meta { margin-top: 1rem; }
+.video-badge {
+  display: inline-block; padding: 0.25rem 0.9rem; border-radius: 50px;
+  background: rgba(232,117,138,0.15); border: 1px solid rgba(232,117,138,0.3);
+  color: var(--rose); font-size: 0.72rem; letter-spacing: 0.06em; margin-bottom: 0.6rem;
+}
+.video-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.35rem;
+  font-weight: 600; margin-bottom: 0.4rem; line-height: 1.3;
+}
+.video-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+.video-sidebar { display: flex; flex-direction: column; gap: 0.7rem; }
+.video-thumb-item {
+  display: flex; gap: 0.8rem; align-items: center;
+  padding: 0.8rem 1rem; border-radius: 14px; cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  transition: all 0.25s;
+}
+.video-thumb-item:hover, .video-thumb-item.active {
+  background: rgba(232,117,138,0.1); border-color: rgba(232,117,138,0.3);
+}
+.vthumb-img {
+  width: 54px; height: 38px; border-radius: 8px;
+  background: rgba(255,255,255,0.07); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.vthumb-title { font-size: 0.78rem; font-weight: 500; line-height: 1.3; margin-bottom: 2px; }
+.vthumb-channel { font-size: 0.68rem; color: var(--rose); }
+
+/* ─── COMMUNITY CARDS ─── */
+.community-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+.community-card {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  padding: 1.6rem; text-decoration: none; color: var(--text);
+  border-radius: 22px; transition: all 0.3s var(--transition);
+  position: relative; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.community-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: 22px;
+  background: var(--card-glow); opacity: 0; transition: opacity 0.3s;
+}
+.community-card:hover { transform: translateY(-5px); border-color: var(--card-color); }
+.community-card:hover::before { opacity: 1; }
+.community-card-wide { grid-column: span 2; flex-direction: row; }
+.community-icon-wrap {
+  width: 72px; height: 72px; border-radius: 18px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+}
+.community-info { flex: 1; }
+.community-title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.35rem;
+  font-weight: 600; margin-bottom: 0.4rem;
+}
+.community-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 0.9rem; }
+.community-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.ctag {
+  padding: 0.2rem 0.7rem; border-radius: 50px; font-size: 0.7rem;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-muted);
+}
+.community-cta {
+  font-size: 0.82rem; font-weight: 500; color: var(--rose);
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  transition: gap 0.2s;
+}
+.community-card:hover .community-cta { gap: 0.6rem; }
+
+/* ─── GALLERY (keep old ref) ─── */
+.gallery-grid {
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap:1rem;
+}
+.gallery-item {
+  border-radius:20px; overflow:hidden; position:relative;
+  cursor:pointer; aspect-ratio:4/3;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  transition:transform 0.4s var(--transition);
+}
+.gallery-item:nth-child(1) { grid-row:1/3; aspect-ratio:auto; }
+.gallery-item:hover { transform:scale(1.02); z-index:2; }
+.gallery-inner {
+  width:100%; height:100%; min-height:180px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.5rem; flex-direction:column; gap:0.5rem;
+  transition:all 0.4s;
+}
+.gallery-item:hover .gallery-inner { backdrop-filter:brightness(1.2); }
+.gallery-caption {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:1rem; background:linear-gradient(to top, rgba(13,10,20,0.8), transparent);
+  font-size:0.78rem; color:rgba(248,245,240,0.8);
+  transform:translateY(100%); transition:transform 0.3s;
+}
+.gallery-item:hover .gallery-caption { transform:translateY(0); }
+
+/* ─── FOOTER ─── */
+footer {
+  position:relative; z-index:1;
+  background: rgba(5,3,10,0.85);
+  backdrop-filter: blur(30px);
+  border-top:1px solid var(--glass-border);
+  padding:4rem 2rem 2rem;
+  text-align:center;
+}
+.footer-ribbon { font-size:3rem; animation: float 3s ease-in-out infinite; display:inline-block; margin-bottom:1rem; }
+.footer-quote {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:1.5rem; color:var(--text-muted); margin-bottom:2rem;
+}
+.social-icons { display:flex; gap:1rem; justify-content:center; margin-bottom:2rem; }
+.social-btn {
+  width:44px; height:44px; border-radius:50%;
+  background:var(--glass-bg); border:1px solid var(--glass-border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; cursor:pointer;
+  transition:all 0.3s; text-decoration:none; color:var(--text);
+}
+.social-btn:hover { background:rgba(232,117,138,0.2); border-color:var(--rose); transform:translateY(-3px); }
+.footer-bottom { font-size:0.78rem; color:var(--text-muted); padding-top:2rem; border-top:1px solid rgba(255,255,255,0.05); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(30px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes float {
+  0%,100% { transform:translateY(0); }
+  50% { transform:translateY(-10px); }
+}
+@keyframes float-cell {
+  0%,100% { transform:translate(0,0) rotate(0deg); }
+  33% { transform:translate(8px,-12px) rotate(120deg); }
+  66% { transform:translate(-8px,8px) rotate(240deg); }
+}
+@keyframes pulse-glow {
+  0%,100% { box-shadow:0 0 20px rgba(232,117,138,0.3); }
+  50% { box-shadow:0 0 40px rgba(232,117,138,0.6); }
+}
+@keyframes heartbeat {
+  0% { transform:scaleY(1); }
+  50% { transform:scaleY(1.3); }
+  100% { transform:scaleY(1); }
+}
+.reveal {
+  opacity:0; transform:translateY(24px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ─── SOUND INDICATOR ─── */
+#sound-toggle {
+  position:fixed; bottom:2rem; right:2rem; z-index:100;
+  width:44px; height:44px; border-radius:50%;
+  background:var(--glass-bg); border:1px solid var(--glass-border);
+  backdrop-filter:var(--blur); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; transition:all 0.3s;
+}
+#sound-toggle:hover { background:rgba(255,255,255,0.15); transform:scale(1.1); }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px) {
+  #what-is-cancer .split, .dos-donts { grid-template-columns:1fr; }
+  .gallery-grid { grid-template-columns:1fr 1fr; }
+  .gallery-item:nth-child(1) { grid-row:auto; grid-column:1/3; }
+  nav .nav-links { display:none; }
+}
+@media(max-width:480px) {
+  .gallery-grid { grid-template-columns:1fr; }
+  .gallery-item:nth-child(1) { grid-column:auto; }
+}
+
+/* Divider */
+.divider {
+  width:80px; height:2px;
+  background:linear-gradient(90deg, var(--rose), var(--gold));
+  margin:0 0 2rem; border-radius:1px;
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-logo">🎗 CancerAware</div>
+  <ul class="nav-links">
+    <li><a href="#what-is-cancer">Learn</a></li>
+    <li><a href="#symptoms">Symptoms</a></li>
+    <li><a href="#dos">Prevention</a></li>
+    <li><a href="#statistics">Statistics</a></li>
+    <li><a href="#resources">Help</a></li>
+  </ul>
+  <button id="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content glass glass-lg">
+    <div class="hero-badge"><span class="ribbon-icon">🎗</span> Cancer Awareness</div>
+    <h1 class="hero-title">Knowledge is<br>the First Cure</h1>
+    <p class="hero-subtitle">Early detection saves lives.<br>Awareness saves families.</p>
+    <div class="hero-btns">
+      <a href="#symptoms" class="btn-glass primary">Know the Symptoms</a>
+      <a href="#dos" class="btn-glass">Dos & Don'ts</a>
+      <a href="#timeline" class="btn-glass">Check Your Risk</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-pill"><strong>1 in 5</strong> people develop cancer in their lifetime</div>
+      <div class="stat-pill"><strong>50%</strong> of cancers are preventable</div>
+      <div class="stat-pill"><strong>3× better</strong> survival with early detection</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS CANCER -->
+<section id="what-is-cancer">
+  <div class="container">
+    <div class="section-label reveal">Understanding Cancer</div>
+    <h2 class="section-title reveal">What Happens<br>Inside Your Body?</h2>
+    <div class="divider reveal"></div>
+    <div class="split">
+      <div class="cell-visual reveal" id="cell-vis" title="Hover to see the difference">
+        <div class="cell-anim" id="cell-canvas-2d">
+          <!-- Cells rendered by JS -->
+        </div>
+        <div class="cell-label">
+          <span>⬤ Healthy Cells</span>
+          <span>⬤ Cancer Cells</span>
+        </div>
+      </div>
+      <div class="info-card glass glass-lg reveal">
+        <div class="section-label">Biology Made Simple</div>
+        <h3 class="section-title" style="font-size:1.8rem;">Cells Gone Rogue</h3>
+        <p>Your body is made of trillions of cells, each following precise instructions about when to grow, divide, and die. Cancer begins when these instructions break down — a cell starts multiplying uncontrollably, ignoring the body's natural stop signals.</p>
+        <p>These abnormal cells form masses called tumors. Some stay in one place (benign). Others invade nearby tissues or spread through the bloodstream to other organs (malignant) — this spreading is called metastasis.</p>
+        <p>The encouraging truth: caught early, before spreading begins, many cancers are highly treatable. Awareness is your first shield.</p>
+        <div class="fact-tags">
+          <span class="fact-tag">🔬 200+ types of cancer</span>
+          <span class="fact-tag">🧬 DNA mutations</span>
+          <span class="fact-tag">💊 Highly treatable when caught early</span>
+          <span class="fact-tag">🛡 Prevention is possible</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYMPTOMS -->
+<section id="symptoms" style="overflow:hidden;">
+  <div class="container">
+    <div class="section-label reveal">Listen to Your Body</div>
+    <h2 class="section-title reveal">Early Warning Signs</h2>
+    <p class="section-sub reveal">These signals don't always mean cancer — but they always mean: <em>talk to a doctor.</em></p>
+    <div class="divider reveal"></div>
+  </div>
+  <div style="padding:0 max(2rem, calc((100vw - 1100px)/2)); position:relative;">
+    <div class="symptoms-scroll reveal">
+      <div class="symptom-card glass glass-sm">
+        <span class="symptom-icon">😴</span>
+        <h4>Unexplained Fatigue</h4>
+        <p>Persistent tiredness that doesn't improve with rest, often one of the earliest signs across many cancer types.</p>
+      </div>
+      <div class="symptom-card glass glass-sm">
+        <span class="symptom-icon">🔵</span>
+        <h4>Unusual Lumps</h4>
+        <p>Any new lump or swelling — especially in the breast, neck, armpit, or groin — deserves prompt medical attention.</p>
+      </div>
+      <div class="symptom-card glass glass-sm">
+        <span class="symptom-icon">⚖️</span>
+        <h4>Sudden Weight Loss</h4>
+        <p>Losing 5kg+ without trying, without a dietary change, can be a signal that something needs investigation.</p>
+      </div>
+      <div class="symptom-card glass glass-sm">
+        <span class="symptom-icon">🩸</span>
+        <h4>Unexplained Bleeding</h4>
+        <p>Blood in urine, stool, coughing blood, or abnormal vaginal bleeding warrants immediate evaluation.</p>
+      </div>
+      <div class="symptom-card glass glass-sm">
+        <span class="symptom-icon">🤕</span>
+        <h4>Persistent Pain</h4>
+        <p>Ongoing headaches, back pain, or discomfort that doesn't resolve or has no obvious cause.</p>
+      </div>
+      <div class="symptom-card glass glass-sm">
+        <span class="symptom-icon">🌡</span>
+        <h4>Recurring Fever</h4>
+        <p>Frequent fevers — especially at night — can be a sign the immune system is fighting something serious.</p>
+      </div>
+      <div class="symptom-card glass glass-sm">
+        <span class="symptom-icon">🍽</span>
+        <h4>Appetite Changes</h4>
+        <p>Difficulty swallowing, persistent nausea, or losing your appetite without explanation.</p>
+      </div>
+      <div class="symptom-card glass glass-sm">
+        <span class="symptom-icon">🔲</span>
+        <h4>Skin Changes</h4>
+        <p>New moles, changes to existing spots, yellowing of skin, or wounds that won't heal.</p>
+      </div>
+    </div>
+    <svg class="heartbeat-bg" viewBox="0 0 1200 60" preserveAspectRatio="none">
+      <polyline points="0,30 150,30 200,5 250,55 300,5 350,55 400,30 1200,30"
+        stroke="rgba(232,117,138,0.6)" stroke-width="2" fill="none">
+        <animate attributeName="stroke-dashoffset" from="0" to="-1200" dur="3s" repeatCount="indefinite"/>
+      </polyline>
+    </svg>
+  </div>
+</section>
+
+<!-- DOS & DONTS -->
+<section id="dos">
+  <div class="container">
+    <div class="section-label reveal">Prevention & Awareness</div>
+    <h2 class="section-title reveal">Dos & Don'ts</h2>
+    <div class="divider reveal"></div>
+    <div class="dos-donts reveal">
+      <div class="glass dos-panel" style="padding:2rem; border-radius:24px;">
+        <div class="panel-header">✅ Dos — Protect Yourself</div>
+        <div class="item-row">
+          <div class="item-icon">🥦</div>
+          <div class="item-text">
+            <h5>Eat Fresh & Whole Foods</h5>
+            <p>A diet rich in vegetables, fruits, and whole grains significantly reduces cancer risk. Minimize processed and red meats.</p>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">🏃</div>
+          <div class="item-text">
+            <h5>Exercise Regularly</h5>
+            <p>Just 30 minutes of moderate activity daily can reduce the risk of colon, breast, and endometrial cancers by up to 25%.</p>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">🩺</div>
+          <div class="item-text">
+            <h5>Get Routine Screenings</h5>
+            <p>Mammograms, colonoscopies, Pap smears, and PSA tests catch cancer before it becomes life-threatening.</p>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">😴</div>
+          <div class="item-text">
+            <h5>Prioritize Quality Sleep</h5>
+            <p>7–9 hours nightly allows your body to repair DNA damage and maintain immune function that fights cancer cells.</p>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">🧴</div>
+          <div class="item-text">
+            <h5>Use Sun Protection</h5>
+            <p>Apply SPF 30+ daily, wear protective clothing, and avoid peak UV hours to prevent skin cancers.</p>
+          </div>
+        </div>
+      </div>
+      <div class="glass donts-panel" style="padding:2rem; border-radius:24px;">
+        <div class="panel-header">❌ Don'ts — Avoid These</div>
+        <div class="item-row">
+          <div class="item-icon">🚬</div>
+          <div class="item-text">
+            <h5>Don't Use Tobacco</h5>
+            <p>Smoking causes 1 in 5 cancer deaths. It's the single most preventable cause of cancer worldwide — including for non-smokers around smokers.</p>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">🙈</div>
+          <div class="item-text">
+            <h5>Don't Ignore Symptoms</h5>
+            <p>That persistent cough, unusual lump, or unexplained pain deserves a doctor's attention. Early detection is life-saving.</p>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">💊</div>
+          <div class="item-text">
+            <h5>Don't Self-Diagnose</h5>
+            <p>Internet searches breed anxiety and delay proper care. Only a qualified doctor with appropriate tests can diagnose cancer accurately.</p>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">🍺</div>
+          <div class="item-text">
+            <h5>Don't Drink Excessively</h5>
+            <p>Alcohol increases the risk of at least 7 types of cancer. The safest amount for cancer prevention is none.</p>
+          </div>
+        </div>
+        <div class="item-row">
+          <div class="item-icon">⏰</div>
+          <div class="item-text">
+            <h5>Don't Delay Medical Help</h5>
+            <p>Fear or denial doesn't make symptoms go away — it gives cancer time to grow. Act immediately. Every day matters.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATISTICS -->
+<section id="statistics">
+  <div class="container">
+    <div class="section-label reveal">By the Numbers</div>
+    <h2 class="section-title reveal">Understanding the Scale</h2>
+    <p class="section-sub reveal">Facts presented not to frighten, but to empower. Knowledge is protection.</p>
+    <div class="divider reveal"></div>
+    <div class="stats-grid reveal">
+      <div class="stat-card glass glass-sm">
+        <span class="stat-number" data-count="20">0</span>
+        <span class="stat-desc">Million new cancer diagnoses globally each year</span>
+      </div>
+      <div class="stat-card glass glass-sm">
+        <span class="stat-number" data-count="50">0</span>
+        <span class="stat-desc">Percent of cancers are preventable with lifestyle changes</span>
+      </div>
+      <div class="stat-card glass glass-sm">
+        <span class="stat-number" data-count="90">0</span>
+        <span class="stat-desc">Percent 5-year survival rate for breast cancer when caught at Stage I</span>
+      </div>
+      <div class="stat-card glass glass-sm">
+        <span class="stat-number" data-count="3">0</span>
+        <span class="stat-desc">Times better survival odds with early vs. late detection</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHEN TO SEE A DOCTOR -->
+<section id="timeline">
+  <div class="container" style="display:grid; grid-template-columns:1fr 1.2fr; gap:3rem; align-items:start;">
+    <div class="reveal">
+      <div class="section-label">Take Action</div>
+      <h2 class="section-title">When to See<br>a Doctor</h2>
+      <p style="color:var(--text-muted); line-height:1.8; margin-bottom:2rem; font-size:0.95rem;">You don't need to be afraid. You need to be informed. This gentle road map helps you navigate the path from noticing something to receiving the right care — one calm step at a time.</p>
+      <div class="glass" style="padding:1.5rem; border-radius:20px; background:rgba(232,117,138,0.08); border-color:rgba(232,117,138,0.25);">
+        <div style="font-size:2.5rem; margin-bottom:0.5rem;">👨‍⚕️</div>
+        <p style="font-size:0.88rem; color:var(--text-muted); font-style:italic; line-height:1.7;">
+          "A doctor's appointment is not a verdict — it's the first act of self-care. Most symptoms have innocent explanations. But knowing for certain gives you the greatest gift: peace of mind or a timely diagnosis."
+        </p>
+      </div>
+    </div>
+    <div class="timeline reveal">
+      <div class="timeline-item glass glass-sm">
+        <div class="timeline-dot"></div>
+        <span class="timeline-step">Step 1</span>
+        <h4>Notice a Symptom</h4>
+        <p>Something feels different — unusual, persistent, or new. Trust your intuition. Your body is speaking.</p>
+      </div>
+      <div class="timeline-item glass glass-sm">
+        <div class="timeline-dot"></div>
+        <span class="timeline-step">Step 2</span>
+        <h4>Document & Observe</h4>
+        <p>Note when it started, how it feels, what makes it better or worse. Two weeks is a reasonable window — then act.</p>
+      </div>
+      <div class="timeline-item glass glass-sm">
+        <div class="timeline-dot"></div>
+        <span class="timeline-step">Step 3</span>
+        <h4>Book a Screening</h4>
+        <p>Contact your GP or local health clinic. Routine screenings are often covered by insurance or available free through health programs.</p>
+      </div>
+      <div class="timeline-item glass glass-sm">
+        <div class="timeline-dot"></div>
+        <span class="timeline-step">Step 4</span>
+        <h4>Receive Diagnosis</h4>
+        <p>Tests may include blood work, imaging, or biopsy. Most results are reassuring. If cancer is found, you are not alone.</p>
+      </div>
+      <div class="timeline-item glass glass-sm">
+        <div class="timeline-dot" style="background:linear-gradient(135deg,#7dd87f, var(--gold));"></div>
+        <span class="timeline-step" style="color:#7dd87f;">Step 5</span>
+        <h4>Begin Treatment & Heal</h4>
+        <p>Modern oncology offers targeted therapies, immunotherapy, and surgical precision. Early-stage treatment is often brief and highly effective.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORIES -->
+<section id="stories">
+  <div class="container">
+    <div class="section-label reveal">Real Voices</div>
+    <h2 class="section-title reveal">Survivor Stories</h2>
+    <p class="section-sub reveal">Every story here is a reminder: early action changes everything.</p>
+    <div class="divider reveal"></div>
+    <div class="stories-grid reveal">
+      <div class="story-card glass glass-sm">
+        <div class="story-avatar">👩</div>
+        <blockquote>"I found the lump myself during a routine self-exam. I almost ignored it — it seemed too small to matter. Early action gave me decades more."</blockquote>
+        <div class="story-meta">Sarah, 41 — Breast Cancer Survivor</div>
+        <div><span class="story-badge">✓ 8 years cancer-free</span></div>
+      </div>
+      <div class="story-card glass glass-sm">
+        <div class="story-avatar">👨</div>
+        <blockquote>"I thought fatigue was just from work stress. My wife insisted I get checked. That doctor's appointment saved my life. Don't wait for certainty."</blockquote>
+        <div class="story-meta">Raj, 55 — Lymphoma Survivor</div>
+        <div><span class="story-badge">✓ 5 years cancer-free</span></div>
+      </div>
+      <div class="story-card glass glass-sm">
+        <div class="story-avatar">👩‍🦳</div>
+        <blockquote>"At 63, my routine colonoscopy found a polyp. Stage 0. No treatment needed — just removal. Screening is not just a test; it's a gift to yourself."</blockquote>
+        <div class="story-meta">Margaret, 66 — Colon Cancer Survivor</div>
+        <div><span class="story-badge">✓ 3 years cancer-free</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO SECTION -->
+<section id="video-section">
+  <div class="container">
+    <div class="section-label reveal">Watch & Learn</div>
+    <h2 class="section-title reveal">Understanding Cancer</h2>
+    <p class="section-sub reveal">Expert insights, patient stories, and life-saving knowledge — in minutes.</p>
+    <div class="divider reveal"></div>
+    <div class="video-layout reveal">
+      <div class="video-main">
+        <div class="video-wrapper">
+          <iframe
+            src="https://www.youtube.com/embed/ENhOh6tCMCg?rel=0&modestbranding=1&color=white"
+            title="What is Cancer? — Explained by Experts"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="video-meta">
+          <div class="video-badge">🎬 Featured</div>
+          <h3 class="video-title">What is Cancer? How Does Cancer Start?</h3>
+          <p class="video-desc">A clear, visual explanation of how cancer cells form, multiply, and spread — and why early detection changes everything.</p>
+        </div>
+      </div>
+      <div class="video-sidebar">
+        <div class="video-thumb-item" onclick="loadVideo('dM3TAIi-Xbc', this)">
+          <div class="ppk.jpg">▶ 🩺</div>
+          <div class="vthumb-info">
+            <div class="vthumb-title">Early Cancer Signs You Shouldn't Ignore</div>
+            <div class="vthumb-channel">MD Anderson Cancer Center</div>
+          </div>
+        </div>
+        <div class="video-thumb-item" onclick="loadVideo('2bMZiGHB5oc', this)">
+          <div class="vthumb-img">▶ 💊</div>
+          <div class="vthumb-info">
+            <div class="vthumb-title">How Chemotherapy Works</div>
+            <div class="vthumb-channel">TED-Ed</div>
+          </div>
+        </div>
+        <div class="video-thumb-item" onclick="loadVideo('RLtnvB0Q6vY', this)">
+          <div class="vthumb-img">▶ 🧬</div>
+          <div class="vthumb-info">
+            <div class="vthumb-title">Cancer Prevention — Lifestyle Choices That Matter</div>
+            <div class="vthumb-channel">WHO Global</div>
+          </div>
+        </div>
+        <div class="video-thumb-item" onclick="loadVideo('kqSR0bBOWMo', this)">
+          <div class="vthumb-img">▶ 💪</div>
+          <div class="vthumb-info">
+            <div class="vthumb-title">Surviving Cancer — Real Patient Stories</div>
+            <div class="vthumb-channel">American Cancer Society</div>
+          </div>
+        </div>
+        <div class="video-thumb-item" onclick="loadVideo('UFu4gDSgQ9s', this)">
+          <div class="vthumb-img">▶ 🔬</div>
+          <div class="vthumb-info">
+            <div class="vthumb-title">The Future of Cancer Treatment</div>
+            <div class="vthumb-channel">TED Talks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY & CARE -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-label reveal">Community & Care</div>
+    <h2 class="section-title reveal">In the Fight Together</h2>
+    <p class="section-sub reveal">Every journey is easier when walked together. Find your community.</p>
+    <div class="divider reveal"></div>
+    <div class="community-grid reveal">
+
+      <!-- Awareness Walk -->
+      <a href="https://www.cancer.org/involved/fundraise/making-strides-against-breast-cancer.html" target="_blank" class="community-card glass" style="--card-color: rgba(232,117,138,0.3); --card-glow: rgba(232,117,138,0.15);">
+        <div class="community-icon-wrap" style="background: linear-gradient(135deg,rgba(232,117,138,0.3),rgba(200,184,216,0.15));">
+          <span class="community-big-icon">🚶‍♀️🚶</span>
+        </div>
+        <div class="community-info">
+          <h3 class="community-title">Awareness Walk</h3>
+          <p class="community-desc">Join thousands walking in solidarity. Register for your nearest cancer awareness walk event and make every step count.</p>
+          <div class="community-tags">
+            <span class="ctag">🗓 Events Near You</span>
+            <span class="ctag">🌍 Global</span>
+          </div>
+          <div class="community-cta">Join a Walk <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- Screening Clinic -->
+      <a href="https://www.cancer.org/cancer/screening.html" target="_blank" class="community-card glass" style="--card-color: rgba(74,144,217,0.3); --card-glow: rgba(74,144,217,0.15);">
+        <div class="community-icon-wrap" style="background: linear-gradient(135deg,rgba(74,144,217,0.25),rgba(13,10,20,0.3));">
+          <span class="community-big-icon">🩺</span>
+        </div>
+        <div class="community-info">
+          <h3 class="community-title">Screening Clinic</h3>
+          <p class="community-desc">Find free or low-cost cancer screening camps in your city. Early detection saves lives — one test at a time.</p>
+          <div class="community-tags">
+            <span class="ctag">🆓 Free Camps</span>
+            <span class="ctag">📍 Locate Nearby</span>
+          </div>
+          <div class="community-cta">Find Screening <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- Support Group → WhatsApp -->
+      <a href="https://wa.me/918374335934?text=Hello%2C%20I%20would%20like%20to%20join%20the%20cancer%20support%20group." target="_blank" class="community-card glass" style="--card-color: rgba(37,211,102,0.3); --card-glow: rgba(37,211,102,0.12);">
+        <div class="community-icon-wrap" style="background: linear-gradient(135deg,rgba(37,211,102,0.2),rgba(212,168,67,0.1));">
+          <span class="community-big-icon">🤝</span>
+        </div>
+        <div class="community-info">
+          <h3 class="community-title">Support Group</h3>
+          <p class="community-desc">Connect directly with our support coordinator on WhatsApp. Weekly survivor circles, counseling referrals & emotional support.</p>
+          <div class="community-tags">
+            <span class="ctag">💬 WhatsApp</span>
+            <span class="ctag">🕐 24/7 Available</span>
+          </div>
+          <div class="community-cta" style="color:#25d366;">Chat on WhatsApp <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- Research Lab -->
+      <a href="https://www.cancer.gov/research" target="_blank" class="community-card glass" style="--card-color: rgba(100,200,120,0.3); --card-glow: rgba(100,200,120,0.12);">
+        <div class="community-icon-wrap" style="background: linear-gradient(135deg,rgba(100,200,120,0.2),rgba(74,144,217,0.1));">
+          <span class="community-big-icon">🔬</span>
+        </div>
+        <div class="community-info">
+          <h3 class="community-title">Research Lab</h3>
+          <p class="community-desc">Explore the latest breakthroughs in cancer research. Participate in clinical trials and be part of tomorrow's cure.</p>
+          <div class="community-tags">
+            <span class="ctag">🧬 Clinical Trials</span>
+            <span class="ctag">📰 Latest Research</span>
+          </div>
+          <div class="community-cta">Explore Research <span>→</span></div>
+        </div>
+      </a>
+
+      <!-- Pink Ribbon Day -->
+      <a href="https://www.nbcf.org.au/pink-ribbon-day/" target="_blank" class="community-card glass community-card-wide" style="--card-color: rgba(232,117,138,0.3); --card-glow: rgba(212,168,67,0.12);">
+        <div class="community-icon-wrap" style="background: linear-gradient(135deg,rgba(232,117,138,0.2),rgba(212,168,67,0.15));">
+          <span class="community-big-icon">🎗</span>
+        </div>
+        <div class="community-info">
+          <h3 class="community-title">Pink Ribbon Day</h3>
+          <p class="community-desc">Every October, the world unites in pink. Attend Pink Ribbon Day events near you — fundraisers, walks, concerts, and awareness drives bringing communities together in solidarity against breast cancer.</p>
+          <div class="community-tags">
+            <span class="ctag">🌸 October Events</span>
+            <span class="ctag">🌍 Worldwide</span>
+            <span class="ctag">🎀 Breast Cancer Awareness</span>
+          </div>
+          <div class="community-cta">View Pink Ribbon Events <span>→</span></div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="section-label reveal">You're Not Alone</div>
+    <h2 class="section-title reveal">Help & Resources</h2>
+    <p class="section-sub reveal">Reach out. A conversation can be the beginning of recovery.</p>
+    <div class="divider reveal"></div>
+    <div class="resources-grid reveal">
+
+      <!-- Cancer Helpline Card -->
+      <div class="resource-card glass glass-sm rc-collapsible" onclick="toggleCard(this)">
+        <div class="rc-top">
+          <div class="resource-icon">📞</div>
+          <h4>Cancer Helpline</h4>
+          <p>Speak with a trained cancer information specialist, available 24/7.</p>
+          <div class="rc-chevron">›</div>
+        </div>
+        <div class="resource-sub-items rc-body">
+          <div class="sub-item">
+            <span class="sub-icon">🇺🇸</span>
+            <div>
+              <div class="sub-title">NCI Cancer Info</div>
+              <div class="sub-detail">1-800-4-CANCER (1-800-422-6237)</div>
+              <a href="https://www.cancer.gov/contact" target="_blank" class="sub-link" onclick="event.stopPropagation()">cancer.gov/contact</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">🎗</span>
+            <div>
+              <div class="sub-title">American Cancer Society</div>
+              <div class="sub-detail">1-800-227-2345 · Available 24/7</div>
+              <a href="https://www.cancer.org/about-us/contact-us.html" target="_blank" class="sub-link" onclick="event.stopPropagation()">cancer.org</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">💬</span>
+            <div>
+              <div class="sub-title">CancerCare Helpline</div>
+              <div class="sub-detail">1-800-813-4673 · Multilingual</div>
+              <a href="https://www.cancercare.org/connect_workshops" target="_blank" class="sub-link" onclick="event.stopPropagation()">cancercare.org</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">🌐</span>
+            <div>
+              <div class="sub-title">India Cancer Helpline</div>
+              <div class="sub-detail">1800-180-4104 · ICMR Tollfree</div>
+              <a href="https://main.icmr.nic.in/" target="_blank" class="sub-link" onclick="event.stopPropagation()">icmr.nic.in</a>
+            </div>
+          </div>
+          <span class="resource-link rc-action" onclick="event.stopPropagation(); callHelpline()">Call Now →</span>
+        </div>
+      </div>
+
+      <!-- Find a Specialist Card -->
+      <div class="resource-card glass glass-sm rc-collapsible" onclick="toggleCard(this)">
+        <div class="rc-top">
+          <div class="resource-icon">🏥</div>
+          <h4>Find a Specialist</h4>
+          <p>Locate accredited cancer treatment centers and oncologists near you.</p>
+          <div class="rc-chevron">›</div>
+        </div>
+        <div class="resource-sub-items rc-body">
+          <div class="sub-item">
+            <span class="sub-icon">🏛️</span>
+            <div>
+              <div class="sub-title">Tata Memorial Hospital</div>
+              <div class="sub-detail">Dr. E Borges Rd, Parel, Mumbai</div>
+              <a href="https://tmc.gov.in" target="_blank" class="sub-link" onclick="event.stopPropagation()">tmc.gov.in</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">🔬</span>
+            <div>
+              <div class="sub-title">MD Anderson Cancer Center</div>
+              <div class="sub-detail">1515 Holcombe Blvd, Houston TX</div>
+              <a href="https://www.mdanderson.org" target="_blank" class="sub-link" onclick="event.stopPropagation()">mdanderson.org</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">🏨</span>
+            <div>
+              <div class="sub-title">Apollo Cancer Centers</div>
+              <div class="sub-detail">Pan-India · Multiple Locations</div>
+              <a href="https://cancercare.apollohospitals.com" target="_blank" class="sub-link" onclick="event.stopPropagation()">apollohospitals.com</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">🩺</span>
+            <div>
+              <div class="sub-title">AIIMS Oncology Dept</div>
+              <div class="sub-detail">Sri Aurobindo Marg, New Delhi</div>
+              <a href="https://www.aiims.edu" target="_blank" class="sub-link" onclick="event.stopPropagation()">aiims.edu</a>
+            </div>
+          </div>
+          <span class="resource-link rc-action" onclick="event.stopPropagation(); openSpecialistModal()">Find Hospital →</span>
+        </div>
+      </div>
+
+      <!-- NGO Support Card -->
+      <div class="resource-card glass glass-sm rc-collapsible" onclick="toggleCard(this)">
+        <div class="rc-top">
+          <div class="resource-icon">💙</div>
+          <h4>NGO Support</h4>
+          <p>Financial assistance, counseling & community programs for patients.</p>
+          <div class="rc-chevron">›</div>
+        </div>
+        <div class="resource-sub-items rc-body">
+          <div class="sub-item">
+            <span class="sub-icon">🎗</span>
+            <div>
+              <div class="sub-title">Indian Cancer Society</div>
+              <div class="sub-detail">Awareness · Early Detection · Rehab</div>
+              <a href="https://www.indiancancersociety.org" target="_blank" class="sub-link" onclick="event.stopPropagation()">indiancancersociety.org</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">💛</span>
+            <div>
+              <div class="sub-title">CanKids KidsCan</div>
+              <div class="sub-detail">Pediatric Cancer Support India</div>
+              <a href="https://www.cankidsindia.org" target="_blank" class="sub-link" onclick="event.stopPropagation()">cankidsindia.org</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">🌸</span>
+            <div>
+              <div class="sub-title">Cope With Cancer (Madat)</div>
+              <div class="sub-detail">Patient Aid · Treatment Support</div>
+              <a href="https://www.copewithcancer.org" target="_blank" class="sub-link" onclick="event.stopPropagation()">copewithcancer.org</a>
+            </div>
+          </div>
+          <div class="sub-item">
+            <span class="sub-icon">❤️</span>
+            <div>
+              <div class="sub-title">American Cancer Society</div>
+              <div class="sub-detail">Research · Advocacy · Patient Care</div>
+              <a href="https://www.cancer.org" target="_blank" class="sub-link" onclick="event.stopPropagation()">cancer.org</a>
+            </div>
+          </div>
+          <span class="resource-link rc-action" onclick="event.stopPropagation(); openNGOModal()">View All 10 NGOs →</span>
+        </div>
+      </div>
+
+      <!-- Risk Calculator Card -->
+      <div class="resource-card glass glass-sm rc-collapsible" onclick="toggleCard(this)">
+        <div class="rc-top">
+          <div class="resource-icon">📋</div>
+          <h4>Risk Calculator</h4>
+          <p>Assess your personal cancer risk with our AI-powered tool.</p>
+          <div class="rc-chevron">›</div>
+        </div>
+        <div class="resource-sub-items rc-body">
+          <div class="sub-item coming-soon-preview">
+            <span class="sub-icon">🤖</span>
+            <div>
+              <div class="sub-title">AI-Powered Assessment</div>
+              <div class="sub-detail">ML model analyzing 20+ risk factors</div>
+            </div>
+          </div>
+          <div class="sub-item coming-soon-preview">
+            <span class="sub-icon">📊</span>
+            <div>
+              <div class="sub-title">Personalized Risk Score</div>
+              <div class="sub-detail">Based on age, lifestyle & genetics</div>
+            </div>
+          </div>
+          <div class="sub-item coming-soon-preview">
+            <span class="sub-icon">📅</span>
+            <div>
+              <div class="sub-title">Screening Schedule</div>
+              <div class="sub-detail">Custom timeline recommendations</div>
+            </div>
+          </div>
+          <div class="sub-item coming-soon-preview">
+            <span class="sub-icon">🔒</span>
+            <div>
+              <div class="sub-title">100% Private & Secure</div>
+              <div class="sub-detail">No data stored, fully anonymous</div>
+            </div>
+          </div>
+          <span class="resource-link rc-action" onclick="event.stopPropagation(); openRiskModal()">Assess Risk →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- NGO Modal -->
+<div id="ngo-modal" class="modal-overlay" onclick="closeModal('ngo-modal')">
+  <div class="modal-box glass" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('ngo-modal')">✕</button>
+    <div class="modal-icon">💙</div>
+    <h3 class="modal-title">Top 10 Cancer NGOs Worldwide</h3>
+    <p class="modal-sub">Trusted organizations providing patient support, research funding & awareness</p>
+    <div class="ngo-list">
+      <a href="https://www.cancer.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">01</div>
+        <div class="ngo-info">
+          <div class="ngo-name">American Cancer Society</div>
+          <div class="ngo-desc">Research, advocacy & patient support across the US</div>
+          <div class="ngo-url">cancer.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.cancerresearchuk.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">02</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Cancer Research UK</div>
+          <div class="ngo-desc">World's largest independent cancer research charity</div>
+          <div class="ngo-url">cancerresearchuk.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.indiancancersociety.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">03</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Indian Cancer Society</div>
+          <div class="ngo-desc">India's premier cancer education & early detection NGO</div>
+          <div class="ngo-url">indiancancersociety.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.livestrong.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">04</div>
+        <div class="ngo-info">
+          <div class="ngo-name">LIVESTRONG Foundation</div>
+          <div class="ngo-desc">Empowering cancer patients to live stronger</div>
+          <div class="ngo-url">livestrong.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.cancercare.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">05</div>
+        <div class="ngo-info">
+          <div class="ngo-name">CancerCare</div>
+          <div class="ngo-desc">Free counseling, support groups & financial assistance</div>
+          <div class="ngo-url">cancercare.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.nationalbreastcancer.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">06</div>
+        <div class="ngo-info">
+          <div class="ngo-name">National Breast Cancer Foundation</div>
+          <div class="ngo-desc">Early detection, education & patient navigation</div>
+          <div class="ngo-url">nationalbreastcancer.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.cankidsindia.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">07</div>
+        <div class="ngo-info">
+          <div class="ngo-name">CanKids KidsCan (India)</div>
+          <div class="ngo-desc">Comprehensive support for children with cancer</div>
+          <div class="ngo-url">cankidsindia.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.uicc.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">08</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Union for International Cancer Control</div>
+          <div class="ngo-desc">Global coalition of 1,100+ cancer organizations</div>
+          <div class="ngo-url">uicc.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.copewithcancer.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">09</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Cope With Cancer (Madat Trust)</div>
+          <div class="ngo-desc">Patient aid & rehabilitation for Indian cancer patients</div>
+          <div class="ngo-url">copewithcancer.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.pcrf.net" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">10</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Pediatric Cancer Research Foundation</div>
+          <div class="ngo-desc">Funding breakthrough research for childhood cancers</div>
+          <div class="ngo-url">pcrf.net</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Risk Calculator Modal (Coming Soon) -->
+<div id="risk-modal" class="modal-overlay" onclick="closeModal('risk-modal')">
+  <div class="modal-box glass" onclick="event.stopPropagation()" style="text-align:center; max-width:520px;">
+    <button class="modal-close" onclick="closeModal('risk-modal')">✕</button>
+    <div class="coming-soon-badge">🚧 Coming Soon</div>
+    <div style="font-size:4rem; margin:1.5rem 0;">🤖</div>
+    <h3 class="modal-title">AI Cancer Risk Calculator</h3>
+    <p class="modal-sub" style="margin:0 auto 2rem;">Our machine learning model is being trained on thousands of clinical datasets to provide you with an accurate, personalized cancer risk assessment.</p>
+    <div class="coming-soon-features">
+      <div class="cs-feature"><span>📊</span> 20+ Risk Factor Analysis</div>
+      <div class="cs-feature"><span>🧬</span> Genetic & Lifestyle Inputs</div>
+      <div class="cs-feature"><span>📅</span> Screening Timeline Generator</div>
+      <div class="cs-feature"><span>🔒</span> 100% Anonymous & Private</div>
+    </div>
+    <div class="notify-box">
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Get notified when it launches:</p>
+      <div style="display:flex; gap:0.5rem; justify-content:center;">
+        <input type="email" placeholder="your@email.com" class="notify-input" />
+        <button class="btn-glass primary" style="padding:0.6rem 1.2rem; font-size:0.8rem;" onclick="notifyMe()">Notify Me</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Specialist Modal -->
+<div id="specialist-modal" class="modal-overlay" onclick="closeModal('specialist-modal')">
+  <div class="modal-box glass" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('specialist-modal')">✕</button>
+    <div class="modal-icon">🏥</div>
+    <h3 class="modal-title">Find a Cancer Specialist</h3>
+    <p class="modal-sub">Top-rated oncology centers with contact details</p>
+    <div class="ngo-list">
+      <a href="https://tmc.gov.in" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">🇮🇳</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Tata Memorial Hospital</div>
+          <div class="ngo-desc">Dr. E Borges Rd, Parel, Mumbai — 022-2417-7000</div>
+          <div class="ngo-url">tmc.gov.in</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://cancercare.apollohospitals.com" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">🇮🇳</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Apollo Cancer Centres</div>
+          <div class="ngo-desc">Pan-India · 1860-500-1066</div>
+          <div class="ngo-url">apollohospitals.com</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.fortishealthcare.com" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">🇮🇳</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Fortis Cancer Institute</div>
+          <div class="ngo-desc">Multiple cities · 1800-500-8989</div>
+          <div class="ngo-url">fortishealthcare.com</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.aiims.edu" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">🇮🇳</div>
+        <div class="ngo-info">
+          <div class="ngo-name">AIIMS Oncology Dept</div>
+          <div class="ngo-desc">Sri Aurobindo Marg, New Delhi — 011-2658-8500</div>
+          <div class="ngo-url">aiims.edu</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.mdanderson.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">🇺🇸</div>
+        <div class="ngo-info">
+          <div class="ngo-name">MD Anderson Cancer Center</div>
+          <div class="ngo-desc">Houston, TX · +1-877-632-6789</div>
+          <div class="ngo-url">mdanderson.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+      <a href="https://www.mskcc.org" target="_blank" class="ngo-item glass-sm">
+        <div class="ngo-rank">🇺🇸</div>
+        <div class="ngo-info">
+          <div class="ngo-name">Memorial Sloan Kettering</div>
+          <div class="ngo-desc">New York, NY · +1-800-525-2225</div>
+          <div class="ngo-url">mskcc.org</div>
+        </div>
+        <div class="ngo-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-ribbon">🎗</div>
+  <p class="footer-quote">"Awareness today. A healthier tomorrow."</p>
+  <div class="social-icons">
+    <a class="social-btn" title="Twitter">𝕏</a>
+    <a class="social-btn" title="Facebook">f</a>
+    <a class="social-btn" title="Instagram">◉</a>
+    <a class="social-btn" title="YouTube">▶</a>
+  </div>
+  <div class="footer-bottom">
+    <p>This website is for educational purposes only. Always consult a qualified medical professional for diagnosis and treatment.</p>
+    <p style="margin-top:0.5rem; color:rgba(255,255,255,0.3);">Made with care for those who need it most.</p>
+  </div>
+</footer>
+
+<button id="sound-toggle" onclick="toggleSound()" title="Toggle ambient sound">🔔</button>
+
+<script>
+// ─── CANVAS BACKGROUND ───
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [], waveOffset = 0;
+let audioCtx, soundOn = false;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initParticles() {
+  particles = [];
+  const count = Math.min(60, Math.floor(W * H / 15000));
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 4 + 1,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      alpha: Math.random() * 0.4 + 0.1,
+      type: Math.random() > 0.85 ? 'cancer' : 'healthy',
+      pulse: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function drawBg() {
+  ctx.clearRect(0, 0, W, H);
+  
+  // Gradient bg
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const grd = ctx.createRadialGradient(W*0.3, H*0.3, 0, W*0.5, H*0.5, W*0.8);
+  if (isDark) {
+    grd.addColorStop(0, 'rgba(30,15,50,1)');
+    grd.addColorStop(0.5, 'rgba(13,10,20,1)');
+    grd.addColorStop(1, 'rgba(5,3,10,1)');
+  } else {
+    grd.addColorStop(0, 'rgba(240,230,255,1)');
+    grd.addColorStop(0.5, 'rgba(220,210,240,1)');
+    grd.addColorStop(1, 'rgba(200,190,220,1)');
+  }
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+
+  // Light waves
+  waveOffset += 0.003;
+  for (let i = 0; i < 3; i++) {
+    ctx.save();
+    ctx.beginPath();
+    const yBase = H * (0.3 + i * 0.2);
+    ctx.moveTo(0, yBase);
+    for (let x = 0; x <= W; x += 10) {
+      const y = yBase + Math.sin(x * 0.003 + waveOffset + i * 1.2) * 60;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+    const alpha = isDark ? 0.04 - i * 0.01 : 0.06 - i * 0.015;
+    ctx.fillStyle = i % 2 === 0
+      ? `rgba(200,184,216,${alpha})`
+      : `rgba(74,144,217,${alpha})`;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Particles (cells)
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.pulse += 0.02;
+    if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+    if (p.y < -10) p.y = H + 10; if (p.y > H + 10) p.y = -10;
+    const r = p.r + Math.sin(p.pulse) * 0.5;
+    ctx.save();
+    ctx.globalAlpha = p.alpha * (0.8 + Math.sin(p.pulse) * 0.2);
+    const grad = ctx.createRadialGradient(p.x - r * 0.3, p.y - r * 0.3, 0, p.x, p.y, r * 2);
+    if (p.type === 'healthy') {
+      grad.addColorStop(0, 'rgba(150,200,255,0.9)');
+      grad.addColorStop(1, 'rgba(74,144,217,0)');
+    } else {
+      grad.addColorStop(0, 'rgba(255,150,170,0.9)');
+      grad.addColorStop(1, 'rgba(232,117,138,0)');
+    }
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(p.x, p.y, r * 2, 0, Math.PI * 2);
+    ctx.fill(); ctx.restore();
+  });
+}
+
+// ─── CELL ANIMATION IN SECTION ───
+function renderCells() {
+  const container = document.getElementById('cell-canvas-2d');
+  if (!container) return;
+  container.innerHTML = '';
+  const healthyPositions = [[20,15],[55,40],[30,65],[70,20],[80,55]];
+  const cancerPositions = [[15,80],[50,75],[75,85],[60,60],[35,45]];
+  healthyPositions.forEach(([l, t], i) => {
+    const el = document.createElement('div');
+    el.className = 'cell healthy';
+    const size = 30 + i * 8;
+    el.style.cssText = `width:${size}px;height:${size}px;left:${l}%;top:${t}%;
+      animation-duration:${6+i*2}s;animation-delay:${i*-1.5}s;`;
+    container.appendChild(el);
+  });
+  cancerPositions.forEach(([l, t], i) => {
+    const el = document.createElement('div');
+    el.className = 'cell cancer';
+    const size = 25 + i * 6;
+    el.style.cssText = `width:${size}px;height:${size}px;left:${l}%;top:${t}%;
+      animation-duration:${4+i*1.5}s;animation-delay:${i*-1}s;
+      transform:rotate(${i*30}deg);`;
+    container.appendChild(el);
+  });
+}
+
+// ─── SCROLL REVEAL ───
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// ─── PROGRESS BAR ───
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  document.getElementById('progress-bar').style.width = (scrolled * 100) + '%';
+});
+
+// ─── COUNTER ANIMATION ───
+function animateCounters() {
+  document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+    const target = parseInt(el.getAttribute('data-count'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    let current = 0;
+    const step = target / 50;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = Math.round(current) + (suffix || (target <= 20 ? 'M+' : '%'));
+      if (current >= target) clearInterval(timer);
+    }, 40);
+  });
+}
+const statsObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) { animateCounters(); statsObserver.disconnect(); }
+}, { threshold: 0.3 });
+const statsSection = document.getElementById('statistics');
+if (statsSection) statsObserver.observe(statsSection);
+
+// Fix counter suffixes
+document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+  const val = parseInt(el.getAttribute('data-count'));
+  if (val === 20) el.setAttribute('data-suffix', 'M+');
+  else if (val === 50) el.setAttribute('data-suffix', '%');
+  else if (val === 90) el.setAttribute('data-suffix', '%');
+  else if (val === 3) el.setAttribute('data-suffix', 'x');
+});
+
+// ─── THEME TOGGLE ───
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('theme-toggle').textContent = isDark ? '🌙 Dark' : '☀️ Light';
+}
+
+// ─── SOUND (glass chime simulation) ───
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('sound-toggle').textContent = soundOn ? '🔕' : '🔔';
+  if (soundOn && !audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function playChime() {
+  if (!soundOn || !audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.value = 880 + Math.random() * 400;
+  osc.type = 'sine';
+  gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+  osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+}
+
+document.querySelectorAll('.btn-glass, .symptom-card, .resource-link, .social-btn').forEach(el => {
+  el.addEventListener('mouseenter', playChime);
+});
+
+// ─── LOOP ───
+function loop() { drawBg(); requestAnimationFrame(loop); }
+
+window.addEventListener('resize', () => { resize(); initParticles(); });
+resize(); initParticles(); renderCells(); loop();
+
+// ─── COLLAPSIBLE RESOURCE CARDS ───
+function toggleCard(card) {
+  const isOpen = card.classList.contains('open');
+  // Close all others
+  document.querySelectorAll('.rc-collapsible.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+// ─── MODAL FUNCTIONS ───
+function openNGOModal() { document.getElementById('ngo-modal').classList.add('open'); document.body.style.overflow='hidden'; }
+function openRiskModal() { document.getElementById('risk-modal').classList.add('open'); document.body.style.overflow='hidden'; }
+function openSpecialistModal() { document.getElementById('specialist-modal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+function callHelpline() { window.open('tel:18002272345'); }
+function notifyMe() {
+  const input = document.querySelector('.notify-input');
+  if (input.value && input.value.includes('@')) {
+    input.value = '';
+    const btn = input.nextElementSibling;
+    btn.textContent = '✓ Saved!';
+    btn.style.background = 'rgba(100,200,120,0.3)';
+    setTimeout(() => { btn.textContent = 'Notify Me'; btn.style.background = ''; }, 2500);
+  } else {
+    input.style.borderColor = 'var(--rose)';
+    setTimeout(() => input.style.borderColor = '', 1500);
+  }
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') { document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open')); document.body.style.overflow=''; }});
+
+// ─── VIDEO SWITCHER ───
+function loadVideo(id, el) {
+  document.querySelector('.video-wrapper iframe').src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&color=white&autoplay=1`;
+  document.querySelectorAll('.video-thumb-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+</script>
+</body>
+</html>
